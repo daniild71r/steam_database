@@ -26,4 +26,4 @@ create unique index ent_genres_name_uindex
 	on games.ent_genres (name);
 
 create unique index ent_publishers_name_uindex
-                	on games.ent_publishers (name);
+    on games.ent_publishers (name);
