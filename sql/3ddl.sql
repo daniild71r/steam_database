@@ -19,8 +19,10 @@ create table games.ent_games (
 	game_id serial not null
 	    constraint ent_games_pk primary key,
 	name text not null,
-	required_age integer,
-	dlc_count integer,
+	required_age integer
+	    check (required_age >= 0),
+	dlc_count integer
+	    check (dlc_count >= 0),
 	release_date date
 );
 
@@ -29,9 +31,12 @@ create table games.ent_games_activity (
 		constraint ent_games_activity_pk primary key
 		constraint ent_games_activity_ent_games_game_id_fk references games.ent_games
 			on update cascade on delete cascade,
-	average_playtime integer,
-	median_playtime integer,
+	average_playtime integer
+        check (average_playtime >= 0),
+	median_playtime integer
+        check (median_playtime >= 0),
 	peak_activity integer
+        check (peak_activity >= 0)
 );
 
 create table games.ent_games_finance (
@@ -40,8 +45,10 @@ create table games.ent_games_finance (
 		constraint ent_games_finance_ent_games_game_id_fk references games.ent_games
 			on update cascade on delete cascade,
 	is_free boolean,
-	price double precision,
-	owners_count double precision
+	price integer
+        check (price >= 0),
+	owners_count integer
+        check (owners_count >= 0)
 );
 
 create table games.ent_games_platforms (
@@ -60,12 +67,14 @@ create table games.ent_games_reception (
 	    constraint ent_games_reception_pk primary key
 		constraint ent_games_reception_ent_games_game_id_fk references games.ent_games
 		    on update cascade on delete cascade,
-	positive_reviews integer,
-	negative_reviews integer,
+	positive_reviews integer
+        check (positive_reviews >= 0),
+	negative_reviews integer
+	    check (negative_reviews >= 0),
 	positivity double precision
 	    check (abs(positivity - 100.0 * positive_reviews / (positive_reviews + negative_reviews)) < 0.1),
 	metacritic integer
-        check (0 <= metacritic and metacritic <= 100)
+        check (metacritic >= 0 and metacritic <= 100)
 );
 
 create table games.ent_genres (
